@@ -1,0 +1,88 @@
+<SnakesGame>:
+    snake1: snake1
+    snake2: snake2
+    status_bar: status_bar
+
+    Snake:
+        id: snake1
+        center_x: self.parent.width / 3
+        center_y: self.parent.height / 2
+        # Python logo blue color value
+        color: 52/255, 122/255, 180/255, 1
+
+        canvas.before:
+            Color:
+                rgba: self.color
+
+    Snake:
+        id: snake2
+        center_x: self.parent.width * 2/3
+        center_y: self.parent.height / 2
+        # Python logo yellow color value
+        color: 1, 202/255, 29/255, 1
+
+        canvas.before:
+            Color:
+                rgba: self.color
+
+    StatusBar:
+        id: status_bar
+        width: self.parent.width
+        height:
+            # Set height in relation to game size
+            self.parent.height / 20 \
+            if self.parent.height / 20 > 10 \
+            else 10
+        top: self.parent.height
+
+        canvas:
+            Color:
+                rgba: 0.2, 0.2, 0.2, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Label:
+            text: str(snake1.score)
+            color: snake1.color
+            font_size: self.height
+
+            canvas:
+                Color:
+                    rgba: self.color
+                Line:
+                    rectangle: self.x+1, self.y+1, self.width-1, self.height-1
+
+        Label:
+            text: str(snake2.score)
+            color: snake2.color
+            font_size: self.height
+
+            canvas:
+                Color:
+                    rgba: self.color
+                Line:
+                    rectangle: self.x+1, self.y+1, self.width-1, self.height-1
+
+
+<Snake>:
+    width:
+        # Set width in relation to game size
+        self.parent.width / 40 \
+        if self.parent.width < self.parent.height \
+        else self.parent.height / 40
+    height: self.width  # Maintain a square shape even on resize
+
+    canvas.after:
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+
+<Trail>:
+    canvas:
+        Color:
+            rgba: self.color
+        Rectangle:
+            size: self.size
+            pos: self.pos
