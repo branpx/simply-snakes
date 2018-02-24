@@ -22,7 +22,7 @@ class SnakesGame(Widget):
     status_bar = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(SnakesGame, self).__init__(**kwargs)
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
@@ -57,7 +57,7 @@ class SnakesGame(Widget):
                 self.snake2.direction = (1, 0)
 
     def run(self):
-        Clock.schedule_interval(self.update, 1/60)
+        Clock.schedule_interval(self.update, 1/60.)
 
     def update(self, dt):
         """Moves snakes and gives points if collision occured."""
@@ -70,13 +70,13 @@ class SnakesGame(Widget):
 
     def reset(self):
         """Resets the positions/directions and removes trails."""
-        self.snake1.center = (self.width/3, self.height/2)
-        self.snake2.center = (self.width*2/3, self.height/2)
+        self.snake1.center = (self.width/3., self.height/2.)
+        self.snake2.center = (self.width*2/3., self.height/2.)
         self.snake1.direction = (0, 0)
         self.snake2.direction = (0, 0)
         for trail in self.trails:
             self.remove_widget(trail)
-        self.trails.clear()
+        del self.trails[:]
 
 
 class Snake(Widget):
@@ -125,9 +125,9 @@ class Snake(Widget):
         """Moves the `Snake` and returns whether a collision occured."""
         # Scale speed in relation to game widget size
         if self.parent.width < self.parent.height:
-            speed_scale = self.parent.width / 250
+            speed_scale = self.parent.width / 250.
         else:
-            speed_scale = self.parent.height / 250
+            speed_scale = self.parent.height / 250.
 
         self.pos = Vector(self.direction) * speed_scale + self.pos
         if self.trail:

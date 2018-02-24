@@ -5,10 +5,10 @@
 
     Snake:
         id: snake1
-        center_x: self.parent.width / 3
-        center_y: self.parent.height / 2
+        center_x: self.parent.width / 3.
+        center_y: self.parent.height / 2.
         # Python logo blue color value
-        color: 52/255, 122/255, 180/255, 1
+        color: 52/255., 122/255., 180/255., 1
 
         canvas.before:
             Color:
@@ -16,10 +16,10 @@
 
     Snake:
         id: snake2
-        center_x: self.parent.width * 2/3
-        center_y: self.parent.height / 2
+        center_x: self.parent.width * 2/3.
+        center_y: self.parent.height / 2.
         # Python logo yellow color value
-        color: 1, 202/255, 29/255, 1
+        color: 1, 202/255., 29/255., 1
 
         canvas.before:
             Color:
@@ -40,9 +40,9 @@
 <Snake>:
     width:
         # Set width in relation to game size
-        self.parent.width / 40 \
+        self.parent.width / 40. \
         if self.parent.width < self.parent.height \
-        else self.parent.height / 40
+        else self.parent.height / 40.
     height: self.width  # Maintain a square shape even on resize
 
     canvas.after:
@@ -64,8 +64,8 @@
     width: self.parent.width
     height:
         # Set height in relation to game size
-        self.parent.height / 20 \
-        if self.parent.height / 20 > 10 \
+        self.parent.height / 20. \
+        if self.parent.height / 20. > 10 \
         else 10
     top: self.parent.height
 
