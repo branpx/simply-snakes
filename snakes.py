@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.config import Config
@@ -12,21 +14,23 @@ from kivy.vector import Vector
 
 
 class SnakesGame(Widget):
-    trails = ListProperty([])
-    snake1 = ObjectProperty(None)
-    snake2 = ObjectProperty(None)
-    status_bar = ObjectProperty(None)
+    """The root `Widget` for displaying and running the game."""
+
+    trails = ListProperty()
+    snake1 = ObjectProperty()
+    snake2 = ObjectProperty()
+    status_bar = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.keyboard = Window.request_keyboard(self.keyboard_closed, self)
-        self.keyboard.bind(on_key_down=self.on_keyboard_down)
+        self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
-    def keyboard_closed(self):
-        self.keyboard.unbind(on_key_down=self.on_keyboard_down)
-        self.keyboard = None
+    def _keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self._on_keyboard_down)
+        self._keyboard = None
 
-    def on_keyboard_down(self, keyboard, keycode, text, modifiers):
+    def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if keycode[1] == 's':
             if self.snake1.direction != [0, 1]:
                 self.snake1.direction = (0, -1)
@@ -53,11 +57,10 @@ class SnakesGame(Widget):
                 self.snake2.direction = (1, 0)
 
     def run(self):
-        """Schedule clock to run game."""
         Clock.schedule_interval(self.update, 1/60)
 
     def update(self, dt):
-        """Move snakes and give points if collision occured."""
+        """Moves snakes and gives points if collision occured."""
         if self.snake1.move(self.snake2):
             self.snake2.score += 1
             self.reset()
@@ -66,7 +69,7 @@ class SnakesGame(Widget):
             self.reset()
 
     def reset(self):
-        """Reset snake positions/directions and remove trails."""
+        """Resets the positions/directions and removes trails."""
         self.snake1.center = (self.width/3, self.height/2)
         self.snake2.center = (self.width*2/3, self.height/2)
         self.snake1.direction = (0, 0)
@@ -77,15 +80,25 @@ class SnakesGame(Widget):
 
 
 class Snake(Widget):
+    """Represents the head of a snake, which can be moved around."""
+
     color = ListProperty()
-    direction_x = NumericProperty(0)
-    direction_y = NumericProperty(0)
+    direction_x = NumericProperty()
+    direction_y = NumericProperty()
     direction = ReferenceListProperty(direction_x, direction_y)
-    trail = ObjectProperty(None)
-    score = NumericProperty(0)
+    trail = ObjectProperty()
+    score = NumericProperty()
 
     def collide_widget(self, wid):
-        """Collision detection that works with negative size."""
+        """Collision detection that works with negative sizes.
+
+        Args:
+            wid: The `Widget` to check for collision against.
+
+        Returns:
+            True if a collision occured, otherwise False.
+
+        """
         if wid.width < 0:
             if self.right < wid.right + 1:
                 return False
@@ -109,7 +122,7 @@ class Snake(Widget):
         return True
 
     def move(self, other):
-        """Move snake and return whether a collision occured."""
+        """Moves the `Snake` and returns whether a collision occured."""
         # Scale speed in relation to game widget size
         if self.parent.width < self.parent.height:
             speed_scale = self.parent.width / 250
@@ -137,7 +150,7 @@ class Snake(Widget):
         return False
 
     def on_direction(self, snake, direction):
-        """Create and position a new trail on direction change."""
+        """Creates and positions a new trail."""
         self.trail = Trail(size=self.size, pos=self.pos, color=self.color)
 
         # Position trail for following directly behind snake head
@@ -157,15 +170,20 @@ class Snake(Widget):
 
 
 class Trail(Widget):
+    """Represents a trail left behind as the `Snake` moves."""
+
     color = ListProperty()
 
 
 class StatusBar(BoxLayout):
+    """A container for displaying scores."""
+
     pass
 
 
 class SnakesApp(App):
     def build(self):
+        """Creates and runs the game."""
         Config.set('kivy', 'exit_on_escape', '0')
         game = SnakesGame()
         game.run()

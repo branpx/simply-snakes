@@ -27,42 +27,14 @@
 
     StatusBar:
         id: status_bar
-        width: self.parent.width
-        height:
-            # Set height in relation to game size
-            self.parent.height / 20 \
-            if self.parent.height / 20 > 10 \
-            else 10
-        top: self.parent.height
 
-        canvas:
-            Color:
-                rgba: 0.2, 0.2, 0.2, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
-        Label:
+        ScoreLabel:
             text: str(snake1.score)
             color: snake1.color
-            font_size: self.height
 
-            canvas:
-                Color:
-                    rgba: self.color
-                Line:
-                    rectangle: self.x+1, self.y+1, self.width-1, self.height-1
-
-        Label:
+        ScoreLabel:
             text: str(snake2.score)
             color: snake2.color
-            font_size: self.height
-
-            canvas:
-                Color:
-                    rgba: self.color
-                Line:
-                    rectangle: self.x+1, self.y+1, self.width-1, self.height-1
 
 
 <Snake>:
@@ -86,3 +58,30 @@
         Rectangle:
             size: self.size
             pos: self.pos
+
+
+<StatusBar>:
+    width: self.parent.width
+    height:
+        # Set height in relation to game size
+        self.parent.height / 20 \
+        if self.parent.height / 20 > 10 \
+        else 10
+    top: self.parent.height
+
+    canvas:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+
+<ScoreLabel@Label>:
+    font_size: self.height
+
+    canvas:
+        Color:
+            rgba: self.color
+        Line:
+            rectangle: self.x+1, self.y+1, self.width-1, self.height-1
