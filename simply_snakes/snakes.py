@@ -190,5 +190,9 @@ class SnakesApp(App):
         return game
 
 
-if __name__ == '__main__':
+def main():
     SnakesApp().run()
+
+
+if __name__ == '__main__':
+    main()
