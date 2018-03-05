@@ -74,6 +74,7 @@ class SnakesGame(Widget):
         self.snake2.center = (self.width*2/3., self.height/2.)
         self.snake1.direction = (0, 0)
         self.snake2.direction = (0, 0)
+
         for trail in self.trails:
             self.remove_widget(trail)
         del self.trails[:]
@@ -109,6 +110,7 @@ class Snake(Widget):
                 return False
             if self.x > wid.right - 1:
                 return False
+
         if wid.height < 0:
             if self.top < wid.top + 1:
                 return False
@@ -119,6 +121,7 @@ class Snake(Widget):
                 return False
             if self.y > wid.top - 1:
                 return False
+
         return True
 
     def move(self, other):
